@@ -16,12 +16,13 @@ from anondcm.anonymizer import (
 )
 from anondcm.configuration import Configuration
 
-Profile = Literal["research", "strict", "minimal"]
+Profile = Literal["research", "strict", "minimal", "ps315"]
 
 PROFILES: dict[Profile, Callable[[], Configuration]] = {
     "research": Configuration.research,
     "strict": Configuration.strict,
     "minimal": Configuration.minimal,
+    "ps315": Configuration.ps315,
 }
 DEFAULT_PROFILE: Profile = "research"
 
@@ -67,8 +68,9 @@ def parse_args(argv: Sequence[str] | None = None) -> Args:
         default=DEFAULT_PROFILE,
         help=(
             "Anonymization profile: 'research' keeps clinically useful tags such "
-            "as dates and descriptions, 'strict' also blanks those, and 'minimal' "
-            "only scrubs direct patient identifiers (default: %(default)s)"
+            "as dates and descriptions, 'strict' also blanks those, 'minimal' only "
+            "scrubs direct patient identifiers, and 'ps315' applies the full DICOM "
+            "PS3.15 Basic Profile (default: %(default)s)"
         ),
     )
     args = parser.parse_args(argv, namespace=Args())

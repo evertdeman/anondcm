@@ -206,6 +206,22 @@ class Configuration:
         return cls(rules=rules, remove_private_tags=False)
 
     @classmethod
+    def ps315(cls) -> Configuration:
+        """The DICOM PS3.15 Basic Confidentiality Profile (header attributes).
+
+        Applies the Basic Profile action for every catalogued attribute (remove,
+        blank, or -- for key identifiers -- a consistent pseudonym), remaps UIDs,
+        and removes private tags. This covers far more tags than :meth:`research`
+        and is the most standards-aligned profile, but it discards many
+        non-identifying tags that ``research`` keeps (dates, descriptions, patient
+        characteristics). Pixel data and other image content are still not
+        de-identified; PS3.15 pixel/structured-content options are out of scope.
+        """
+        from anondcm._ps315 import PS315_RULES
+
+        return cls(rules=dict(PS315_RULES))
+
+    @classmethod
     def default(cls) -> Configuration:
         """The default profile (:meth:`research`)."""
         return cls.research()

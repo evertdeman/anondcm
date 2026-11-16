@@ -42,6 +42,11 @@ def test_parse_args_accepts_output_and_profile() -> None:
     assert args.profile == "strict"
 
 
+def test_parse_args_accepts_ps315_profile() -> None:
+    args = parse_args(["scan.dcm", "--profile", "ps315"])
+    assert args.profile == "ps315"
+
+
 def test_parse_args_rejects_unknown_profile() -> None:
     try:
         parse_args(["scan.dcm", "--profile", "nope"])
