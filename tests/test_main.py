@@ -21,6 +21,13 @@ def _args(**overrides: object) -> Args:
     return Args(**values)
 
 
+def test_version_flag(capsys: pytest.CaptureFixture[str]) -> None:
+    with pytest.raises(SystemExit) as excinfo:
+        parse_args(["--version"])
+    assert excinfo.value.code == 0
+    assert capsys.readouterr().out.strip().startswith("anondcm ")
+
+
 def test_parse_args_defaults() -> None:
     args = parse_args(["scan.dcm"])
     assert args.input == "scan.dcm"

@@ -41,6 +41,9 @@ anondcm scan.dcm --in-place
 
 # Pick a profile (default: research).
 anondcm scan.dcm --profile strict
+
+# Print the version.
+anondcm --version
 ```
 
 By default the input file is left untouched and the result is written to

@@ -6,6 +6,7 @@ from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Literal
 
+from anondcm import __version__
 from anondcm.anonymizer import (
     PixelDataWarning,
     anonymize_directory,
@@ -36,6 +37,11 @@ def parse_args(argv: Sequence[str] | None = None) -> Args:
     parser = argparse.ArgumentParser(
         prog="anondcm",
         description="Anonymize a DICOM file.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
     )
     parser.add_argument(
         "input", type=str, help="Path to the input DICOM file or a directory of them"
