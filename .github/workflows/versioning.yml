@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
+      contents: read   # required to check out the (private) repo
       id-token: write  # required for PyPI trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
