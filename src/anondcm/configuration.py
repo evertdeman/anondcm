@@ -135,7 +135,14 @@ KEEP_UIDS: frozenset[str] = frozenset(
 
 
 def _research_rules() -> dict[str, RuleLike]:
-    return {**_IDENTIFIER_RULES, **_PATIENT_DETAIL_RULES, **_STAFF_RULES}
+    return {
+        **_IDENTIFIER_RULES,
+        **_PATIENT_DETAIL_RULES,
+        **_STAFF_RULES,
+        # Free-text acquisition field that often carries identifying information;
+        # de-identified by default per DICOM PS3.15.
+        "ProtocolName": _BLANK,
+    }
 
 
 @dataclass

@@ -204,6 +204,19 @@ def test_strict_profile_blanks_dates_and_descriptions(tmp_path: Path) -> None:
     assert str(result.StudyDescription) == ""
 
 
+def test_protocol_name_is_blanked_by_default(tmp_path: Path) -> None:
+    dataset = pydicom.dcmread(PRISTINE)
+    dataset.ProtocolName = "SECRET PROTOCOL"
+    scan = tmp_path / "protocol.dcm"
+    dataset.save_as(scan)
+
+    # research (default) and strict blank it; minimal leaves it alone.
+    assert str(_anonymized(scan, Configuration.research()).ProtocolName) == ""
+    assert str(_anonymized(scan, Configuration.strict()).ProtocolName) == ""
+    minimal = _anonymized(scan, Configuration.minimal())
+    assert str(minimal.ProtocolName) == "SECRET PROTOCOL"
+
+
 def test_minimal_profile_keeps_institution_and_private_tags(tmp_path: Path) -> None:
     original = read_dicom(PRISTINE)
     result = _anonymized(_copy(tmp_path), Configuration.minimal())
