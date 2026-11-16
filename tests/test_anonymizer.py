@@ -278,3 +278,28 @@ def test_pixel_data_preserved_across_modalities(tmp_path: Path, filename: str) -
     assert result.Modality == original.Modality
     assert result.PixelData == original.PixelData
     assert str(result.PatientName) != str(original.PatientName)
+
+
+# -- PS3.15 Basic Profile ---------------------------------------------------
+
+
+def test_ps315_profile_is_comprehensive(tmp_path: Path) -> None:
+    config = Configuration.ps315()
+    # Far broader than the curated profiles.
+    assert len(config.rules) > 500
+
+    original = read_dicom(PRISTINE)
+    result = _anonymized(_copy(tmp_path), config)
+
+    # Identifiers pseudonymized, demographics/institution blanked.
+    assert str(result.PatientName) not in ("", str(original.PatientName))
+    assert str(result.InstitutionName) == ""
+    assert str(result.StudyDate) == ""
+    assert str(result.PatientSex) == ""
+    # Non-identifying tags and class UIDs preserved; instance UIDs remapped.
+    assert result.Modality == original.Modality
+    assert result.SOPClassUID == original.SOPClassUID
+    assert result.StudyInstanceUID != original.StudyInstanceUID
+    assert result.StudyInstanceUID.is_valid
+    # Provenance recorded.
+    assert str(result.PatientIdentityRemoved) == "YES"

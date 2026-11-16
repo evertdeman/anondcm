@@ -69,6 +69,13 @@ anonymize_file("scan.dcm", "anonymized.dcm", Configuration.strict())
 | `research` (default) | Scrub identifiers; keep clinically useful tags such as study dates and descriptions. |
 | `strict` | Also blank dates and free-text descriptions. |
 | `minimal` | Only scrub direct patient identifiers; keep private tags and the rest. |
+| `ps315` | The full DICOM PS3.15 Basic Confidentiality Profile for header attributes. |
+
+The `ps315` profile applies the Basic Profile action for every catalogued
+attribute (generated from the published DICOM standard), so it is the most
+standards-aligned option for *header* de-identification. Note it still does not
+de-identify pixel data, and the PS3.15 pixel/structured-content/date-shifting
+*options* are out of scope — see the disclaimer above.
 
 ## Configuration
 
